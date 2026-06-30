@@ -15,6 +15,7 @@ export const defaultManifest: RenderManifest = {
       startSeconds: 0,
       durationSeconds: 12,
       visualKind: "hook",
+      layout: "question-pop",
       headline: "流畅不等于真实",
       narration: "AI 回答得越自信，就一定越真实吗？",
       bullets: ["先看来源", "再看结论", "最后人审"],

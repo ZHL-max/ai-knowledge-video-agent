@@ -64,16 +64,37 @@ export const visualKindSchema = z.enum([
   "closing"
 ]);
 
+export const visualLayoutSchema = z.enum([
+  "question-pop",
+  "token-factory",
+  "truth-map",
+  "risk-crossroads",
+  "fix-pipeline",
+  "checklist",
+  "recap-formula"
+]);
+
+export const visualPlanSchema = z.object({
+  metaphor: z.string().min(2),
+  composition: z.string().min(4),
+  mainIllustration: z.string().min(2),
+  motion: z.string().min(4),
+  flow: z.array(z.string().min(1)).min(2).max(5),
+  stickers: z.array(z.string().min(1)).min(1).max(4)
+});
+
 export const storyboardSceneSchema = z.object({
   id: z.string(),
   sectionId: z.string(),
   startSeconds: z.number().nonnegative(),
   durationSeconds: z.number().positive(),
   visualKind: visualKindSchema,
+  layout: visualLayoutSchema.default("question-pop"),
   headline: z.string().min(2).max(40),
   narration: z.string().min(8),
   bullets: z.array(z.string().min(2)).min(1).max(4),
   accent: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
+  visualPlan: visualPlanSchema.optional(),
   sourceUrls: z.array(z.string().url()).min(1)
 });
 
@@ -103,6 +124,14 @@ export const renderManifestSchema = z.object({
   scenes: z.array(storyboardSceneSchema).min(1),
   subtitles: z.array(subtitleCueSchema).min(1),
   narration: narrationAssetSchema.optional(),
+  creativeDirection: z
+    .object({
+      visualThesis: z.string().min(8),
+      palette: z.array(z.string()).min(3),
+      pacing: z.string().min(8),
+      referenceNotes: z.array(z.string()).min(2)
+    })
+    .optional(),
   sources: z.array(sourceSchema).min(3),
   createdAt: z.string().datetime()
 });
@@ -143,6 +172,8 @@ export const runRecordSchema = z.object({
 
 export type RunStage = z.infer<typeof runStageSchema>;
 export type Source = z.infer<typeof sourceSchema>;
+export type VisualLayout = z.infer<typeof visualLayoutSchema>;
+export type VisualPlan = z.infer<typeof visualPlanSchema>;
 export type VideoBrief = z.infer<typeof videoBriefSchema>;
 export type ResearchNote = z.infer<typeof researchNoteSchema>;
 export type ScriptDraft = z.infer<typeof scriptDraftSchema>;

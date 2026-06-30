@@ -20,55 +20,57 @@ export class TemplateLLMProvider implements LLMProvider {
 
   async createScriptAndStoryboard(brief: VideoBrief, research: ResearchNote): Promise<ScriptAndStoryboard> {
     const sourceUrls = research.sources.map((source) => source.url);
-    const sourceAt = (index: number) => sourceUrls[index] ?? sourceUrls[0] ?? "https://openai.com/index/why-language-models-hallucinate/";
+    const sourceAt = (index: number) =>
+      sourceUrls[index] ?? sourceUrls[0] ?? "https://openai.com/index/why-language-models-hallucinate/";
+
     const sections = [
       {
         id: "s1",
         title: "开场：它不是在骗你",
         narration:
-          "你有没有遇到过这种情况：问 AI 一个问题，它回答得特别顺，甚至还给出人名、论文、年份。你一查，发现这些细节根本不存在。这个现象叫大模型幻觉。先记住一句话：幻觉不是 AI 在故意撒谎，而是它把听起来合理的内容，当成答案说了出来。",
+          "你问 AI 一个问题，它啪一下给出答案，甚至还顺手编出论文、作者和年份。听起来很真，对吧？但你一查，可能根本没有这篇论文。这就是大模型幻觉。它不是故意骗你，而是把最像答案的句子，说得太像真的了。",
         sourceUrls: [sourceAt(0)]
       },
       {
         id: "s2",
-        title: "大模型到底在做什么",
+        title: "机制：它在接文字龙",
         narration:
-          "大模型的基本动作，是根据前面的文字预测后面最可能出现的文字。它学到的是语言里的模式、关联和表达习惯。这个能力让它能写文章、讲故事、整理知识，但也埋下了一个问题：最像答案的句子，不一定就是事实正确的句子。",
+          "先把 AI 想成一个超级会接话的文字接龙高手。它看到前面的词，就预测后面最可能出现什么词。问题是，顺口不等于真实。它能把一句话接得很漂亮，但这件事到底有没有发生，还需要另一套事实检查。",
         sourceUrls: [sourceAt(0)]
       },
       {
         id: "s3",
-        title: "为什么会一本正经地错",
+        title: "误区：像答案不等于有证据",
         narration:
-          "很多幻觉看起来很真，是因为模型擅长补全模式。你让它解释一个陌生概念，它会寻找相似的表达结构；你让它给出处，它可能生成一个看起来像论文标题的句子。语言形式越完整，我们越容易误以为内容也可靠。",
+          "幻觉最迷人的地方，是它长得很像答案。格式完整，语气自信，甚至数字都很整齐。可知识科普不能只看它像不像，还要看证据链。一个说法如果没有可靠来源支撑，再流畅也只能先放进待核验区。",
         sourceUrls: [sourceAt(1)]
       },
       {
         id: "s4",
-        title: "哪些场景最容易翻车",
+        title: "高危：四种问题最容易翻车",
         narration:
-          "幻觉特别容易出现在四类场景：第一，问题太新，训练数据里没有；第二，问题太含糊，上下文不够；第三，你要求它列具体数字、链接、论文；第四，你暗示它必须给答案。模型不一定会主动停下来问：我真的知道吗？",
+          "哪几类问题最容易让 AI 翻车？第一，刚发生的新消息；第二，问题太含糊；第三，要求列具体数字、链接、论文；第四，你逼它必须给答案。遇到这些场景，就要把警报灯打开：先别转发，先查来源。",
         sourceUrls: [sourceAt(2)]
       },
       {
         id: "s5",
-        title: "怎么降低幻觉",
+        title: "流程：四步降低幻觉",
         narration:
-          "最有效的办法不是一句咒语，而是一套流程。先给可靠资料，再让模型只基于资料回答；让它标出来源；对关键数字和引用做二次核验；最后由人审一遍。也就是说，把 AI 当成会写草稿的助手，而不是永远正确的百科全书。",
+          "降低幻觉，不靠一句神奇提示词，而靠流程。第一，先给可靠资料；第二，限定它只能基于资料回答；第三，让它把来源标出来；第四，关键结论由人复核。把 AI 放进流程里，它才更像助手，不像瞎猜机器。",
         sourceUrls: [sourceAt(0), sourceAt(2)]
       },
       {
         id: "s6",
-        title: "一个实用判断法",
+        title: "工具：三问检查卡",
         narration:
-          "看到 AI 的回答，你可以问三个问题：它有没有给出可打开的来源？来源是否真的支持这句话？这件事是否需要最新信息或专业责任？如果三个问题里有一个答不上来，就不要直接转发或照做。",
+          "普通人怎么快速判断？拿出三张检查卡。第一，来源能打开吗？第二，来源真的支持这句话吗？第三，这件事需要最新信息或专业责任吗？只要有一张卡打叉，就不要直接照做，更不要直接发给别人。",
         sourceUrls: [sourceAt(1)]
       },
       {
         id: "s7",
-        title: "结尾：AI 的正确打开方式",
+        title: "结尾：正确打开 AI",
         narration:
-          "所以，大模型幻觉的本质，是语言预测能力和事实校验能力之间的缝隙。它很会组织表达，但不天然等于事实机器。会用 AI 的人，不是盲目信它，也不是完全不用它，而是让它生成、让资料约束、让人来把关。",
+          "所以，大模型幻觉不是玄学，而是语言预测和事实核验之间的缺口。正确打开方式是：让 AI 生成草稿，让资料约束边界，让人来把关。记住这个公式，你就能更安心地用 AI，而不是被它牵着走。",
         sourceUrls: [sourceAt(0), sourceAt(3)]
       }
     ] satisfies ScriptDraft["sections"];
@@ -77,14 +79,13 @@ export class TemplateLLMProvider implements LLMProvider {
       title: "大模型为什么会幻觉？",
       hook: "AI 回答得越自信，就一定越真实吗？",
       sections,
-      closing: "关注这个系列，用更清醒的方式理解 AI。",
+      closing: "关注这个系列，用更清醒、更好玩的方式理解 AI。",
       hashtags: ["#AI科普", "#大模型", "#人工智能", "#知识科普", "#科技"],
       description:
-        "大模型幻觉不是 AI 故意撒谎，而是语言预测与事实校验之间的错位。本期用 2-3 分钟解释它为什么会一本正经地说错，以及普通人如何降低风险。"
+        "AI 有时会把听起来很合理的内容说得像真的。本期用图解和流程箭头讲清楚：大模型为什么会幻觉，以及普通人如何快速降低风险。"
     };
 
     const durations = [18, 22, 23, 24, 25, 20, 22];
-    let cursor = 0;
     const kinds: StoryboardScene["visualKind"][] = [
       "hook",
       "concept",
@@ -94,7 +95,8 @@ export class TemplateLLMProvider implements LLMProvider {
       "recap",
       "closing"
     ];
-    const accents = ["#5EEAD4", "#FBBF24", "#A78BFA", "#FB7185", "#60A5FA", "#34D399", "#F97316"];
+    const accents = ["#FF6B6B", "#4D96FF", "#FFB703", "#9B5DE5", "#06D6A0", "#F15BB5", "#00BBF9"];
+    let cursor = 0;
 
     const storyboard = sections.map((section, index) => {
       const scene: StoryboardScene = {
@@ -103,10 +105,11 @@ export class TemplateLLMProvider implements LLMProvider {
         startSeconds: cursor,
         durationSeconds: durations[index] ?? 20,
         visualKind: kinds[index] ?? "concept",
+        layout: "question-pop",
         headline: section.title.replace(/^.*：/, ""),
         narration: section.narration,
         bullets: createBullets(index),
-        accent: accents[index] ?? "#5EEAD4",
+        accent: accents[index] ?? "#4D96FF",
         sourceUrls: section.sourceUrls
       };
       cursor += scene.durationSeconds;
@@ -143,7 +146,7 @@ export class OpenAICompatibleLLMProvider implements LLMProvider {
           {
             role: "system",
             content:
-              "你是短视频科普编导。只输出 JSON，字段为 script 与 storyboard。视频面向抖音，中文，轻松但可信。"
+              "你是短视频科普编导。只输出 JSON，字段为 script 与 storyboard。视频面向抖音，中文，轻松、可信、图解驱动。每个 storyboard scene 必须适合用亮色图形、流程箭头和可爱卡片讲解。"
           },
           {
             role: "user",
@@ -182,13 +185,13 @@ export function createLLMProviderFromEnv(): LLMProvider {
 
 function createBullets(index: number): string[] {
   const bullets = [
-    ["流畅不等于真实", "幻觉常常很自信", "先看来源再相信"],
-    ["核心动作：预测下一个词", "语言模式很强", "事实校验要另做"],
-    ["像论文不等于有论文", "像数字不等于真数字", "完整表达会放大信任"],
-    ["新信息", "上下文不足", "具体引用和数字", "被迫给答案"],
-    ["给资料", "标来源", "查关键事实", "人审后发布"],
-    ["来源能打开吗", "来源支持吗", "是否需要最新信息"],
-    ["让 AI 生成", "让资料约束", "让人把关"]
+    ["像真的", "不一定是真的", "先查来源"],
+    ["前文", "预测下一个词", "拼成一句话"],
+    ["听起来合理", "格式很完整", "证据要另查"],
+    ["新消息", "问题模糊", "数字/链接/论文", "必须回答"],
+    ["给资料", "限范围", "标来源", "人复核"],
+    ["来源能打开吗", "真的支持吗", "需要最新信息吗"],
+    ["AI 生成", "资料约束", "人来把关"]
   ];
-  return bullets[index] ?? ["事实先行", "结构化表达", "人工复核"];
+  return bullets[index] ?? ["图解", "流程", "复核"];
 }

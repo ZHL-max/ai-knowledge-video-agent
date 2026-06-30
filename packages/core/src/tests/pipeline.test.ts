@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import {
   FileRunStore,
+  BrightExplainerDirector,
   ManualPublisher,
   MockTTSProvider,
   StaticResearchProvider,
@@ -20,6 +21,7 @@ describe("VideoPipeline", () => {
     const pipeline = new VideoPipeline(store, {
       research: new StaticResearchProvider(),
       llm: new TemplateLLMProvider(),
+      creativeDirector: new BrightExplainerDirector(),
       tts: new MockTTSProvider(),
       publisher: new ManualPublisher()
     });
@@ -36,6 +38,8 @@ describe("VideoPipeline", () => {
     expect(generated.storyboard).toBeDefined();
     expect(generated.manifest?.width).toBe(1080);
     expect(generated.manifest?.height).toBe(1920);
+    expect(generated.manifest?.creativeDirection?.visualThesis).toContain("亮色");
+    expect(generated.storyboard?.every((scene) => scene.visualPlan && scene.layout)).toBe(true);
     expect(generated.manifest?.subtitles.every((cue) => cue.endSeconds > cue.startSeconds)).toBe(true);
     expect(generated.publishPackage?.readyForManualPublish).toBe(true);
 

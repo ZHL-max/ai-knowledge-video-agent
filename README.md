@@ -108,6 +108,7 @@ pnpm build
 - [抖音发布接入](docs/douyin-publishing.md)
 - [开发说明](docs/development.md)
 - [样片说明](docs/sample-topic.md)
+- [视频画风与创意导演规范](docs/video-art-direction.md)
 
 ## 参考
 
@@ -115,6 +116,7 @@ pnpm build
 - [MoneyPrinterTurbo](https://github.com/harry0703/MoneyPrinterTurbo)
 - [NarratoAI](https://github.com/linyqh/NarratoAI)
 - [Remotion AI Video](https://www.remotion.dev/docs/ai-video)
+- [HyperFrames](https://github.com/heygen-com/hyperframes) - 参考其 agent-first 视频设计工作流，当前项目仍使用 Remotion 渲染。
 - [抖音开放平台视频发布](https://developer.open-douyin.com/docs/resource/zh-CN/dop/develop/openapi/content-management/video-management/douyin/create-video)
 - [NarrAgent / arXiv](https://arxiv.org/html/2509.16811v1)
 

@@ -18,10 +18,12 @@ import { createLLMProviderFromEnv, type LLMProvider } from "../providers/llm";
 import { StaticResearchProvider, type ResearchProvider } from "../providers/research";
 import { createTTSProviderFromEnv, type TTSProvider } from "../providers/tts";
 import { createPublisherFromEnv, ManualPublisher, type PublisherProvider } from "../providers/publisher";
+import { BrightExplainerDirector, type CreativeDirectorAgent } from "../providers/creative-director";
 
 export type ProviderBundle = {
   research: ResearchProvider;
   llm: LLMProvider;
+  creativeDirector: CreativeDirectorAgent;
   tts: TTSProvider;
   publisher: PublisherProvider;
 };
@@ -30,6 +32,7 @@ export function createDefaultProviders(): ProviderBundle {
   return {
     research: new StaticResearchProvider(),
     llm: createLLMProviderFromEnv(),
+    creativeDirector: new BrightExplainerDirector(),
     tts: createTTSProviderFromEnv(),
     publisher: createPublisherFromEnv()
   };
@@ -68,7 +71,13 @@ export class VideoPipeline {
     await this.store.saveResearch(run.id, research);
     run = await this.store.saveRun({ ...run, research, stage: "research" });
 
-    const { script, storyboard } = await this.providers.llm.createScriptAndStoryboard(run.brief, research);
+    const { script, storyboard: rawStoryboard } = await this.providers.llm.createScriptAndStoryboard(run.brief, research);
+    const creative = await this.providers.creativeDirector.plan({
+      brief: run.brief,
+      script,
+      storyboard: rawStoryboard
+    });
+    const storyboard = creative.storyboard;
     validateStoryboardTiming(storyboard, run.brief.durationTargetSeconds);
     await this.store.saveScript(run.id, script);
     await this.store.saveStoryboard(run.id, storyboard);
@@ -93,6 +102,7 @@ export class VideoPipeline {
       scenes: storyboard,
       subtitles: buildSubtitles(storyboard),
       narration,
+      creativeDirection: creative.direction,
       sources: research.sources,
       createdAt: nowIso()
     });
