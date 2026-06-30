@@ -43,7 +43,7 @@ app.post("/api/runs", async (request) => {
   const body = z
     .object({
       topic: z.string().min(2).default("大模型为什么会幻觉"),
-      durationTargetSeconds: z.number().int().min(60).max(240).default(150)
+      durationTargetSeconds: z.number().int().min(60).max(240).default(80)
     })
     .parse(request.body ?? {});
   const run = await pipeline.createRun(body);

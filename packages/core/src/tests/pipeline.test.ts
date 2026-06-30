@@ -28,7 +28,7 @@ describe("VideoPipeline", () => {
 
     const run = await pipeline.createRun({
       topic: "大模型为什么会幻觉",
-      durationTargetSeconds: 150
+      durationTargetSeconds: 80
     });
     const generated = await pipeline.generateAll(run.id);
 
@@ -43,8 +43,8 @@ describe("VideoPipeline", () => {
     expect(generated.manifest?.subtitles.every((cue) => cue.endSeconds > cue.startSeconds)).toBe(true);
     expect(generated.publishPackage?.readyForManualPublish).toBe(true);
 
-    validateStoryboardTiming(generated.storyboard!, 150);
-    expect(storyboardEnd(generated.storyboard!)).toBeGreaterThanOrEqual(120);
-    expect(storyboardEnd(generated.storyboard!)).toBeLessThanOrEqual(180);
+    validateStoryboardTiming(generated.storyboard!, 80);
+    expect(storyboardEnd(generated.storyboard!)).toBeGreaterThanOrEqual(60);
+    expect(storyboardEnd(generated.storyboard!)).toBeLessThanOrEqual(90);
   });
 });

@@ -53,7 +53,7 @@ export const App = () => {
     await act("create", "创建任务中", async () => {
       const data = await request<{ run: RunRecord }>("/api/runs", {
         method: "POST",
-        body: JSON.stringify({ topic, durationTargetSeconds: 150 })
+        body: JSON.stringify({ topic, durationTargetSeconds: 80 })
       });
       setSelectedId(data.run.id);
       await refresh();

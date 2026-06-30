@@ -6,7 +6,7 @@
 
 ## 功能
 
-- 2-3 分钟中文 AI 科普视频工作流
+- 60-90 秒中文 AI 科普视频工作流
 - 9:16 竖屏 Remotion 动态图文模板
 - 来源清单、脚本、分镜、字幕、发布文案全流程留痕
 - 本地 Web 控制台：创建选题、生成内容、渲染成片、查看来源、确认发布
@@ -87,9 +87,9 @@ pnpm build
 复制 `.env.example` 为 `.env` 后按需填写。
 
 - `TTS_PROVIDER=edge`：开发默认，使用在线中文语音。
-- `edge` 不可用时会自动降级为同等时长的测试音频，正式运营建议配置稳定云端 TTS。
+- `edge` 不可用时会优先降级到 Windows 本地 SAPI 中文语音；本地语音也不可用时生成可听提示音，正式运营建议配置稳定云端 TTS。
 - `TTS_PROVIDER=openai`：需要 `OPENAI_API_KEY`。
-- `TTS_PROVIDER=mock`：测试用静音音频。
+- `TTS_PROVIDER=mock`：测试用可听提示音。
 - `DOUYIN_ACCESS_TOKEN`、`DOUYIN_OPEN_ID`：配置后才能走抖音官方发布接口。
 
 所有密钥只放 `.env` 或本机环境变量，禁止提交到仓库。

@@ -129,7 +129,7 @@ const HallucinationSchematic = ({ scene, progress, accent }: DiagramProps) => {
 
 const TokenSchematic = ({ scene, progress, accent }: DiagramProps) => {
   const items = scene.visualPlan?.flow ?? scene.bullets;
-  const movingX = interpolate(progress, [0, 1], [250, 760], { extrapolateRight: "clamp" });
+  const movingX = interpolate(loop(progress, 3), [0, 1], [190, 860], { extrapolateRight: "clamp" });
   return (
     <g>
       <text x="120" y="520" fontSize="38" fontWeight="850" fill={ink}>
@@ -141,7 +141,7 @@ const TokenSchematic = ({ scene, progress, accent }: DiagramProps) => {
       <LineGrow x1={190} y1={720} x2={860} y2={720} progress={progress} stroke={accent} width={9} />
       <ArrowHead x={860} y={720} color={accent} />
       {items.slice(0, 4).map((item, index) => (
-        <g key={item} opacity={progress > index * 0.16 ? 1 : 0.18}>
+        <g key={item} opacity={progress > index * 0.08 ? 1 : 0.18}>
           <circle cx={220 + index * 190} cy={720 + Math.sin(index) * 26} r="44" fill="rgba(255,255,255,0.68)" stroke={accent} strokeWidth="5" />
           <text x={220 + index * 190} y={728 + Math.sin(index) * 26} textAnchor="middle" fontSize="25" fontWeight="850" fill={ink}>
             {item}
@@ -160,8 +160,8 @@ const TokenSchematic = ({ scene, progress, accent }: DiagramProps) => {
 };
 
 const TruthSchematic = ({ scene, progress, accent }: DiagramProps) => {
-  const dotX = interpolate(progress, [0, 0.48, 1], [188, 454, 780], { extrapolateRight: "clamp" });
-  const dotY = interpolate(progress, [0, 0.48, 1], [720, 585, 722], { extrapolateRight: "clamp" });
+  const dotX = interpolate(loop(progress, 1.8), [0, 0.48, 1], [188, 454, 780], { extrapolateRight: "clamp" });
+  const dotY = interpolate(loop(progress, 1.8), [0, 0.48, 1], [720, 585, 722], { extrapolateRight: "clamp" });
   return (
     <g>
       <path d="M160 720 C260 560 390 535 520 640" fill="none" stroke="#FFB703" strokeWidth="10" strokeLinecap="round" />
@@ -183,6 +183,7 @@ const TruthSchematic = ({ scene, progress, accent }: DiagramProps) => {
 
 const RiskSchematic = ({ scene, progress, accent }: DiagramProps) => {
   const items = scene.visualPlan?.flow ?? scene.bullets;
+  const ring = loop(progress, 3);
   const targets = [
     { x: 252, y: 548 },
     { x: 790, y: 548 },
@@ -191,6 +192,7 @@ const RiskSchematic = ({ scene, progress, accent }: DiagramProps) => {
   ];
   return (
     <g>
+      <circle cx="540" cy="740" r={76 + ring * 48} fill="none" stroke={accent} strokeWidth="5" opacity={0.22 * (1 - ring)} />
       <circle cx="540" cy="740" r="76" fill="none" stroke={accent} strokeWidth="8" />
       <text x="540" y="758" textAnchor="middle" fontSize="48" fontWeight="900" fill={accent}>
         AI
@@ -198,7 +200,7 @@ const RiskSchematic = ({ scene, progress, accent }: DiagramProps) => {
       {items.slice(0, 4).map((item, index) => {
         const target = targets[index] ?? { x: 252, y: 548 };
         return (
-          <g key={item} opacity={progress > index * 0.14 ? 1 : 0.18}>
+          <g key={item} opacity={progress > index * 0.08 ? 1 : 0.18}>
             <LineGrow x1={540} y1={740} x2={target.x} y2={target.y} progress={progress} stroke={ink} width={4} />
             <circle cx={target.x} cy={target.y} r="38" fill="none" stroke="#FF7043" strokeWidth="6" />
             <text x={target.x} y={target.y + 88} textAnchor="middle" fontSize="32" fontWeight="850" fill={ink}>
@@ -216,14 +218,16 @@ const RiskSchematic = ({ scene, progress, accent }: DiagramProps) => {
 
 const PipelineSchematic = ({ scene, progress, accent }: DiagramProps) => {
   const items = scene.visualPlan?.flow ?? scene.bullets;
+  const movingX = interpolate(loop(progress, 2.4), [0, 1], [150, 930], { extrapolateRight: "clamp" });
   return (
     <g>
       <LineGrow x1={150} y1={700} x2={930} y2={700} progress={progress} stroke={accent} width={10} />
       <ArrowHead x={930} y={700} color={accent} />
+      <circle cx={movingX} cy="700" r="18" fill="#FFB703" />
       {items.slice(0, 4).map((item, index) => {
         const x = 170 + index * 235;
         return (
-          <g key={item} opacity={progress > index * 0.16 ? 1 : 0.2}>
+          <g key={item} opacity={progress > index * 0.08 ? 1 : 0.2}>
             <circle cx={x} cy="700" r="52" fill="rgba(255,255,255,0.76)" stroke={ink} strokeWidth="5" />
             <text x={x} y="708" textAnchor="middle" fontSize="34" fontWeight="900" fill={accent}>
               {index + 1}
@@ -272,7 +276,7 @@ const FormulaSchematic = ({ scene, progress, accent }: DiagramProps) => {
     <g>
       {labels.map((item, index) => {
         const x = 150 + index * 245;
-        const active = progress > index * 0.16;
+        const active = progress > index * 0.08;
         return (
           <g key={item} opacity={active ? 1 : 0.22}>
             {index > 0 ? (
@@ -356,7 +360,7 @@ const FlowWords = ({
   <g>
     {items.slice(0, 4).map((item, index) => {
       const x = 170 + index * 245;
-      const active = progress > index * 0.16;
+      const active = progress > index * 0.08;
       return (
         <g key={item} opacity={active ? 1 : 0.2}>
           <text x={x} y={y} textAnchor="middle" fontSize="34" fontWeight="850" fill={index === items.length - 1 ? accent : ink}>
@@ -412,8 +416,8 @@ const LineGrow = ({
   stroke: string;
   width?: number;
 }) => {
-  const px = x1 + (x2 - x1) * Math.min(1, progress * 1.35);
-  const py = y1 + (y2 - y1) * Math.min(1, progress * 1.35);
+  const px = x1 + (x2 - x1) * Math.min(1, progress * 2.4);
+  const py = y1 + (y2 - y1) * Math.min(1, progress * 2.4);
   return <line x1={x1} y1={y1} x2={px} y2={py} stroke={stroke} strokeWidth={width} strokeLinecap="round" />;
 };
 
@@ -432,6 +436,10 @@ function sceneBg(kind: StoryboardScene["visualKind"]) {
     closing: "#FBFFF7"
   };
   return colors[kind];
+}
+
+function loop(progress: number, cycles: number) {
+  return (Math.max(0, progress) * cycles) % 1;
 }
 
 function findScene(scenes: StoryboardScene[], seconds: number) {

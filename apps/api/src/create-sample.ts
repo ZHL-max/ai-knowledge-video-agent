@@ -4,7 +4,7 @@ const { pipeline } = createAppContext();
 
 const run = await pipeline.createRun({
   topic: "大模型为什么会幻觉",
-  durationTargetSeconds: 150
+  durationTargetSeconds: 80
 });
 
 const generated = await pipeline.generateAll(run.id);

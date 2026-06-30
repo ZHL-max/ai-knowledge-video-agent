@@ -35,7 +35,7 @@ TTS_VOICE=zh-CN-XiaoxiaoNeural
 TTS_RATE=-4%
 ```
 
-如果 Edge 在线语音在当前网络返回 403 或连接失败，Windows 环境会自动调用本地 SAPI 语音兜底；可用 `WINDOWS_TTS_VOICE` 指定本机已安装的声音，例如 `Microsoft Huihui Desktop`。如果本地语音也不可用，系统会生成可听提示音而不是静音音轨。正式运营建议接入稳定的云端 TTS。
+如果 Edge 在线语音在当前网络返回 403 或连接失败，Windows 环境会自动调用本地 SAPI 语音兜底；可用 `WINDOWS_TTS_VOICE` 指定本机已安装的声音，例如 `Microsoft Huihui Desktop`，用 `WINDOWS_TTS_RATE=2` 调整朗读速度。如果本地语音也不可用，系统会生成可听提示音而不是静音音轨。正式运营建议接入稳定的云端 TTS。
 
 测试用：
 

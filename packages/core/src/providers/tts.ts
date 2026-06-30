@@ -122,7 +122,7 @@ export class MockTTSProvider implements TTSProvider {
 
   async synthesize(input: { runId: string; text: string; outputDir: string }): Promise<NarrationAsset> {
     await fs.mkdir(input.outputDir, { recursive: true });
-    const durationSeconds = Math.max(8, Math.min(30, Math.ceil(estimateChineseSpeechSeconds(input.text) / 8)));
+    const durationSeconds = Math.max(60, Math.min(90, Math.ceil(estimateChineseSpeechSeconds(input.text))));
     const audioPath = path.join(input.outputDir, "narration.wav");
     await fs.writeFile(audioPath, makeToneWav(durationSeconds));
     return {
@@ -165,6 +165,7 @@ async function tryWindowsSapiTTS(text: string, outputPath: string, preferredVoic
   const textPath = path.join(path.dirname(outputPath), "narration-input.txt");
   await fs.writeFile(textPath, text, "utf8");
   const voice = process.env.WINDOWS_TTS_VOICE ?? preferredVoice ?? "";
+  const rate = Math.max(-10, Math.min(10, Number(process.env.WINDOWS_TTS_RATE ?? 2)));
   const script = [
     "Add-Type -AssemblyName System.Speech",
     "$synth = New-Object System.Speech.Synthesis.SpeechSynthesizer",
@@ -175,7 +176,7 @@ async function tryWindowsSapiTTS(text: string, outputPath: string, preferredVoic
     "  $zhVoice = $synth.GetInstalledVoices() | ForEach-Object { $_.VoiceInfo } | Where-Object { $_.Culture.Name -like 'zh-*' } | Select-Object -First 1",
     "  if ($zhVoice) { $synth.SelectVoice($zhVoice.Name) }",
     "}",
-    "$synth.Rate = 0",
+    `$synth.Rate = ${rate}`,
     "$synth.Volume = 100",
     `$text = Get-Content -LiteralPath ${powerShellString(textPath)} -Raw -Encoding UTF8`,
     `$synth.SetOutputToWaveFile(${powerShellString(outputPath)})`,

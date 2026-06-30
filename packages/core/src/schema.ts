@@ -26,7 +26,7 @@ export const videoBriefSchema = z.object({
   tone: z.string().default("轻松、可信、节奏明确"),
   platform: z.literal("douyin").default("douyin"),
   aspectRatio: z.literal("9:16").default("9:16"),
-  durationTargetSeconds: z.number().int().min(60).max(240).default(150),
+  durationTargetSeconds: z.number().int().min(60).max(240).default(80),
   createdAt: z.string().datetime()
 });
 

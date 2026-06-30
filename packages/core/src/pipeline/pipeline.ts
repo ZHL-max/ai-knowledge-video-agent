@@ -53,7 +53,7 @@ export class VideoPipeline {
       tone: input.tone ?? "轻松、可信、节奏明确",
       platform: "douyin",
       aspectRatio: "9:16",
-      durationTargetSeconds: input.durationTargetSeconds ?? 150,
+      durationTargetSeconds: input.durationTargetSeconds ?? 80,
       createdAt: nowIso()
     };
     const run = runRecordSchema.parse({
@@ -89,7 +89,10 @@ export class VideoPipeline {
       text: narrationText,
       outputDir: this.store.paths(run.id).audioDir
     });
-    run = await this.store.saveRun({ ...run, stage: "narration" });
+    const timedStoryboard = retimeStoryboardToDuration(storyboard, narration.durationSeconds);
+    validateStoryboardTiming(timedStoryboard, run.brief.durationTargetSeconds);
+    await this.store.saveStoryboard(run.id, timedStoryboard);
+    run = await this.store.saveRun({ ...run, storyboard: timedStoryboard, stage: "narration" });
 
     const manifest = renderManifestSchema.parse({
       runId: run.id,
@@ -98,9 +101,9 @@ export class VideoPipeline {
       width: 1080,
       height: 1920,
       fps: 30,
-      durationSeconds: Math.max(storyboardEnd(storyboard), narration.durationSeconds),
-      scenes: storyboard,
-      subtitles: buildSubtitles(storyboard),
+      durationSeconds: storyboardEnd(timedStoryboard),
+      scenes: timedStoryboard,
+      subtitles: buildSubtitles(timedStoryboard),
       narration,
       creativeDirection: creative.direction,
       sources: research.sources,
@@ -204,8 +207,11 @@ export function buildSubtitles(storyboard: StoryboardScene[]): SubtitleCue[] {
 export function validateStoryboardTiming(storyboard: StoryboardScene[], targetSeconds: number) {
   if (storyboard.length === 0) throw new Error("Storyboard cannot be empty.");
   const end = storyboardEnd(storyboard);
-  if (end < 60 || end > Math.max(240, targetSeconds + 80)) {
-    throw new Error(`Storyboard duration ${end}s is outside the expected range.`);
+  const shortForm = targetSeconds <= 100;
+  const minSeconds = shortForm ? 60 : Math.max(60, targetSeconds - 40);
+  const maxSeconds = shortForm ? 90 : Math.min(240, targetSeconds + 40);
+  if (end < minSeconds || end > maxSeconds) {
+    throw new Error(`Storyboard duration ${end}s is outside the expected ${minSeconds}-${maxSeconds}s range.`);
   }
   storyboard.forEach((scene, index) => {
     if (index === 0 && scene.startSeconds !== 0) {
@@ -223,6 +229,24 @@ export function validateStoryboardTiming(storyboard: StoryboardScene[], targetSe
 
 export function storyboardEnd(storyboard: StoryboardScene[]) {
   return Math.max(...storyboard.map((scene) => scene.startSeconds + scene.durationSeconds));
+}
+
+export function retimeStoryboardToDuration(storyboard: StoryboardScene[], durationSeconds: number) {
+  const originalEnd = storyboardEnd(storyboard);
+  if (!Number.isFinite(durationSeconds) || durationSeconds <= 0 || originalEnd <= 0) return storyboard;
+  const scale = durationSeconds / originalEnd;
+  let cursor = 0;
+  return storyboard.map((scene, index) => {
+    const isLast = index === storyboard.length - 1;
+    const nextDuration = isLast ? round(durationSeconds - cursor) : round(scene.durationSeconds * scale);
+    const retimedScene = {
+      ...scene,
+      startSeconds: round(cursor),
+      durationSeconds: Math.max(0.1, nextDuration)
+    };
+    cursor += retimedScene.durationSeconds;
+    return retimedScene;
+  });
 }
 
 function splitChineseSubtitle(text: string): string[] {

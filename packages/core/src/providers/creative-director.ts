@@ -121,9 +121,9 @@ export class BrightExplainerDirector implements CreativeDirectorAgent {
       },
       storyboard: input.storyboard.map((scene, index) => ({
         ...scene,
-        layout: sceneLayouts[index] ?? "question-pop",
+        layout: scene.layout ?? sceneLayouts[index] ?? "question-pop",
         accent: accents[index] ?? scene.accent,
-        visualPlan: visualPlans[index] ?? visualPlans[0]
+        visualPlan: scene.visualPlan ?? visualPlans[index] ?? visualPlans[0]
       }))
     };
   }
