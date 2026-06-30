@@ -1,0 +1,25 @@
+{
+  "name": "ai-knowledge-video-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI knowledge-popularization short video workflow for script, voiceover, subtitles, Remotion rendering, and human-reviewed Douyin publishing.",
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @aivideo/api --filter @aivideo/console dev",
+    "dev:api": "pnpm --filter @aivideo/api dev",
+    "dev:console": "pnpm --filter @aivideo/console dev",
+    "studio": "pnpm --filter @aivideo/renderer studio",
+    "sample": "pnpm --filter @aivideo/api sample",
+    "render:sample": "pnpm sample && pnpm --filter @aivideo/renderer render:latest",
+    "test": "vitest run",
+    "typecheck": "pnpm --recursive typecheck",
+    "build": "pnpm --recursive build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

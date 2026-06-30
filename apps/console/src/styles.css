@@ -1,0 +1,411 @@
+:root {
+  color: #edf3fb;
+  background: #0a0d12;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(230px, 282px) minmax(0, 1fr);
+  background:
+    linear-gradient(90deg, rgba(94, 234, 212, 0.05), transparent 42%),
+    #0a0d12;
+}
+
+.sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  background: rgba(13, 18, 25, 0.94);
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: #f7fbff;
+  font-weight: 850;
+  letter-spacing: 0;
+}
+
+.brand svg {
+  color: #5eead4;
+}
+
+.create-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 8px;
+}
+
+.create-row input {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #101620;
+  color: #edf3fb;
+  border-radius: 8px;
+  padding: 11px 12px;
+  outline: none;
+}
+
+.create-row input:focus {
+  border-color: #5eead4;
+}
+
+.icon-button,
+.ghost-button,
+.action-button,
+.run-item {
+  border: 0;
+  color: #edf3fb;
+}
+
+.icon-button {
+  border-radius: 8px;
+  background: #1f2937;
+  display: grid;
+  place-items: center;
+}
+
+.icon-button.primary,
+.action-button {
+  background: #5eead4;
+  color: #071014;
+  font-weight: 800;
+}
+
+.run-list {
+  display: grid;
+  gap: 8px;
+  overflow: auto;
+}
+
+.run-item {
+  text-align: left;
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.run-item:hover,
+.run-item.active {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.run-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 760;
+}
+
+.run-item small {
+  color: #9fb0c5;
+}
+
+.workspace {
+  min-width: 0;
+  padding: 28px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #5eead4;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+h1,
+h2,
+h3,
+p {
+  letter-spacing: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(27px, 4vw, 46px);
+  line-height: 1.1;
+}
+
+.ghost-button,
+.action-button {
+  min-height: 40px;
+  border-radius: 8px;
+  padding: 0 14px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.ghost-button {
+  background: #111923;
+}
+
+.review-surface {
+  display: grid;
+  gap: 18px;
+}
+
+.stage-rail {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stage-dot {
+  min-width: 0;
+  height: 34px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #111923;
+  color: #728097;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.stage-dot.done {
+  color: #071014;
+  background: #5eead4;
+}
+
+.stage-dot span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 18px;
+  align-items: start;
+}
+
+.main-column,
+.inspector {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.panel {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  background: rgba(15, 21, 30, 0.78);
+  padding: 18px;
+  min-width: 0;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #aebcd0;
+  font-size: 14px;
+  font-weight: 850;
+  margin-bottom: 15px;
+}
+
+.panel-title svg {
+  color: #5eead4;
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: 25px;
+}
+
+.hook {
+  color: #c9d4e2;
+  margin: 0 0 16px;
+}
+
+.sections {
+  display: grid;
+  gap: 12px;
+}
+
+.script-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 13px;
+}
+
+.script-section h3 {
+  margin: 0 0 7px;
+  font-size: 16px;
+  color: #f4f7fb;
+}
+
+.script-section p,
+.status-lines span,
+.sources span,
+.scene-row small {
+  color: #aebcd0;
+  line-height: 1.6;
+}
+
+.script-section p {
+  margin: 0;
+}
+
+.scene-table,
+.sources,
+.status-lines {
+  display: grid;
+  gap: 10px;
+}
+
+.scene-row {
+  display: grid;
+  grid-template-columns: 54px minmax(120px, 1fr) minmax(180px, 1.1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scene-row strong,
+.scene-row small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sources a {
+  display: grid;
+  gap: 3px;
+  color: inherit;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sources a:hover {
+  background: rgba(94, 234, 212, 0.09);
+}
+
+.preview,
+.preview-placeholder {
+  width: min(100%, 240px);
+  aspect-ratio: 9 / 16;
+  border-radius: 8px;
+  background: #070b10;
+}
+
+.preview {
+  display: block;
+}
+
+.preview-placeholder {
+  display: grid;
+  place-items: center;
+  color: #718096;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+}
+
+.muted-empty,
+.empty-state {
+  color: #718096;
+  min-height: 96px;
+  display: grid;
+  place-items: center;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1060px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .workspace {
+    padding: 18px;
+  }
+
+  .topbar {
+    flex-direction: column;
+  }
+
+  .stage-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .scene-row {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .scene-row small {
+    grid-column: 2;
+  }
+}
