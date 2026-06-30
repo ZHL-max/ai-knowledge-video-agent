@@ -36,6 +36,8 @@ export const App = () => {
   const [message, setMessage] = useState("就绪");
 
   const selected = useMemo(() => runs.find((run) => run.id === selectedId) ?? runs[0], [runs, selectedId]);
+  const narration = selected?.manifest?.narration;
+  const narrationIsFallback = narration ? narration.provider.includes("fallback") : false;
 
   useEffect(() => {
     void refresh();
@@ -224,7 +226,15 @@ export const App = () => {
 
                 <Panel title="成片预览" icon={<Clapperboard size={18} />}>
                   {selected.stage === "rendered" || selected.stage === "packaged" || selected.stage === "published" ? (
-                    <video className="preview" src={`/media/${selected.id}/output/video.mp4`} controls />
+                    <>
+                      <video className="preview" src={`/media/${selected.id}/output/video.mp4`} controls />
+                      {narration ? (
+                        <div className={`audio-note ${narrationIsFallback ? "warning" : ""}`}>
+                          配音：{narration.provider}
+                          {narrationIsFallback ? "（兜底音频，建议正式发布前换云端 TTS）" : ""}
+                        </div>
+                      ) : null}
+                    </>
                   ) : (
                     <div className="preview-placeholder">1080 × 1920</div>
                   )}
